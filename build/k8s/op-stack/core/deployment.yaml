@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-consensus
+  labels:
+    app: node-consensus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-consensus
+  template:
+    metadata:
+      labels:
+        app: node-consensus
+    spec:
+      containers:
+      - name: node-consensus
+        image: ghcr.io/cadtail/op-node:sha-aafb452
+        command: ["./op-node-entrypoint"]
+        ports:
+        - containerPort: 8547
+        envFrom:
+        - configMapRef:
+            name: env-goerli  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: batcher
+  labels:
+    app: batcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: batcher
+  template:
+    metadata:
+      labels:
+        app: batcher
+    spec:
+      containers:
+      - name: batcher
+        image: ghcr.io/cadtail/op-batcher:sha-aafb452
+        command: ["./op-batcher-entrypoint"]
+        ports:
+        - containerPort: 8548
+        envFrom:
+        - configMapRef:
+            name: env-goerli
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proposer
+  labels:
+    app: proposer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: proposer
+  template:
+    metadata:
+      labels:
+        app: proposer
+    spec:
+      containers:
+      - name: proposer
+        image: ghcr.io/cadtail/op-proposer:sha-aafb452
+        command: ["./op-proposer-entrypoint"]
+        ports:
+        - containerPort: 8560
+        envFrom:
+        - configMapRef:
+            name: env-goerli

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: geth-execution
+  labels:
+    app: geth-execution
+spec:
+  serviceName: "geth-execution"
+  selector:
+    matchLabels:
+      app: geth-execution
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: geth-execution
+    spec:
+      containers:
+      - name: geth-execution
+        image: ghcr.io/cadtail/op-geth:sha-aafb452
+        command: ["./op-geth-entrypoint"]
+        ports:
+        - containerPort: 8551
+        - containerPort: 8545
+        - containerPort: 8546
+        - containerPort: 6060
+        volumeMounts:
+        - name: datadir
+          mountPath: /datadir
+        envFrom:
+        - configMapRef:
+            name: env-goerli
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: 
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi

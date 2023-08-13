@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: geth-execution
+  name: geth-execution
+spec:
+  ports:
+  - protocol: TCP
+    port: 8551
+    targetPort: 8551
+    name: sequencer
+  - protocol: TCP
+    port: 8545
+    targetPort: 8545
+    name: rpc
+  - protocol: TCP
+    port: 8546
+    targetPort: 8546
+    name: ws
+  selector:
+    statefulset.kubernetes.io/pod-name: geth-execution-0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: node-consensus
+  name: node-consensus
+spec:
+  ports:
+  - protocol: TCP
+    port: 8547
+    targetPort: 8547
+  selector:
+    app: node-consensus
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: batcher
+  name: batcher
+spec:
+  ports:
+  - protocol: TCP
+    port: 8548
+    targetPort: 8548
+  selector:
+    app: batcher
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: proposer
+  name: proposer
+spec:
+  ports:
+  - protocol: TCP
+    port: 8560
+    targetPort: 8560
+  selector:
+    app: proposer

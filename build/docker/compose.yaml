@@ -1,0 +1,61 @@
+version: "3.9"
+services:
+  # images can be found at github packages
+  # https://github.com/orgs/cadtail/packages?repo_name=optimism
+  execution:
+    image: ghcr.io/cadtail/op-geth:sha-aafb452
+    # build:
+    #   context: ../../
+    #   dockerfile: build/docker/execution.Dockerfile
+    ports:
+      - 8545:8545       
+      - 8546:8546       
+      - 6060:6060       
+    restart: on-failure
+    volumes:
+      - ../../datadir:/datadir
+    env_file:
+      - ../goerli/.env.goerli
+    command: [ "sh", "op-geth-entrypoint" ]
+  consensus:
+    depends_on:
+      - execution
+    image: ghcr.io/cadtail/op-node:sha-aafb452
+    # build:
+    #   context: ../../
+    #   dockerfile: build/docker/consensus.Dockerfile
+    ports:
+      - 8547:8547       
+      - 7545:8545       
+    restart: on-failure
+    env_file:
+      - ../goerli/.env.goerli
+    command: [ "sh", "op-node-entrypoint" ]
+  batcher:
+    depends_on:
+      - consensus
+    image: ghcr.io/cadtail/op-batcher:sha-aafb452
+    # build:
+    #   context: ../../
+    #   dockerfile: build/docker/batcher.Dockerfile
+    ports:
+      - 8548:8548   
+    restart: on-failure
+    env_file:
+      - ../goerli/.env.goerli
+    command: [ "sh", "op-batcher-entrypoint" ]
+  proposer:
+    depends_on:
+      - consensus
+    image: ghcr.io/cadtail/op-proposer:sha-aafb452
+    # build:
+    #   context: ../../
+    #   dockerfile: build/docker/proposer.Dockerfile
+    ports:
+      - 8560:8560   
+    restart: on-failure
+    env_file:
+      - ../goerli/.env.goerli
+    command: [ "sh", "op-proposer-entrypoint" ]
+volumes:
+  op-storage:

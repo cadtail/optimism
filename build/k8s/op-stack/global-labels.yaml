@@ -1,0 +1,14 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: global-labels
+labels:
+  k8s.algo.fit/AppCode: op-stack
+  k8s.algo.fit/Compliance: "false"
+  k8s.algo.fit/DataClassification: op-stack-infra
+  k8s.algo.fit/Environment: goerli
+  k8s.algo.fit/PlatformManaged: "true"
+  k8s.algo.fit/managed-by: ec2ainun
+fieldSpecs:
+- path: metadata/labels
+  create: true
