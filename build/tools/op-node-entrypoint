@@ -1,0 +1,25 @@
+#!/bin/bash
+set -eu
+
+OP_ROLLUP_CONFIG_FILE_PATH="${OP_ROLLUP_CONFIG_FILE_PATH:-/rollup.json}"
+
+# public-facing P2P node, advertise public IP address
+PUBLIC_IP=$(curl -s v4.ident.me)
+export OP_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
+
+echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
+
+exec ./op-node \
+    --l2="$OP_NODE_L2_ENGINE_RPC" \
+    --l2.jwt-secret="$OP_NODE_L2_ENGINE_AUTH" \
+    --sequencer.enabled=true \
+    --sequencer.l1-confs=3 \
+    --verifier.l1-confs=3 \
+    --rollup.config="$OP_ROLLUP_CONFIG_FILE_PATH" \
+    --rpc.addr=0.0.0.0 \
+    --rpc.port="$OP_NODE_PORT" \
+    --p2p.disable \
+    --rpc.enable-admin \
+    --p2p.sequencer.key="$OP_NODE_SEQUENCER_KEY" \
+    --l1="$OP_NODE_L1_ETH_RPC" \
+    --l1.rpckind="$OP_NODE_L1_KIND"

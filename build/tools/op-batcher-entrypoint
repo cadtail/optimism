@@ -1,0 +1,17 @@
+#!/bin/bash
+set -eu
+
+exec ./op-batcher \
+    --l2-eth-rpc="$OP_NODE_L2_ETH_RPC" \
+    --rollup-rpc="$OP_NODE_L2_ROLLUP_RPC" \
+    --poll-interval="$OP_BATCHER_POOL_INTERVAL" \
+    --sub-safety-margin=6 \
+    --num-confirmations="$OP_BATCHER_NUM_CONFIRMATIONS" \
+    --safe-abort-nonce-too-low-count=3 \
+    --resubmission-timeout=30s \
+    --rpc.addr=0.0.0.0 \
+    --rpc.port="$OP_BATCHER_PORT" \
+    --rpc.enable-admin \
+    --max-channel-duration=1 \
+    --l1-eth-rpc="$OP_NODE_L1_ETH_RPC" \
+    --private-key="$OP_BATCHER_KEY"

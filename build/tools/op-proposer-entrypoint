@@ -1,0 +1,16 @@
+#!/bin/bash
+set -eu
+
+# public-facing P2P node, advertise public IP address
+PUBLIC_IP=$(curl -s v4.ident.me)
+export OP_NODE_P2P_ADVERTISE_IP=$PUBLIC_IP
+
+echo $OP_NODE_L2_ENGINE_AUTH_RAW > $OP_NODE_L2_ENGINE_AUTH
+
+exec ./op-proposer \
+    --poll-interval=$OP_PROPOSER_POOL_INTERVAL \
+    --rpc.port=$OP_PROPOSER_PORT \
+    --rollup-rpc=$OP_NODE_L2_ROLLUP_RPC \
+    --l2oo-address=$OP_PROPOSER_L2OO_ADDR \
+    --private-key=$OP_PROPOSER_KEY \
+    --l1-eth-rpc=$OP_NODE_L1_ETH_RPC

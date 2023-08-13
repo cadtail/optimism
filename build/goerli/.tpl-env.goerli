@@ -1,0 +1,36 @@
+#your genesis file, please refer to https://stack.optimism.io/docs/build/getting-started/#generate-the-l2-config-files
+OP_GETH_GENESIS_FILE_PATH=goerli/genesis.json
+OP_ROLLUP_CONFIG_FILE_PATH=goerli/rollup.json
+
+OP_GETH_RPC_PORT=8545
+OP_GETH_AUTHRPC_PORT=8551
+OP_GETH_WS_PORT=8546
+
+# auth secret used by op-geth engine API
+# openssl rand -hex 32 > jwt.txt
+OP_NODE_L2_ENGINE_AUTH_RAW=
+OP_NODE_L2_ENGINE_AUTH=/tmp/engine-auth-jwt
+OP_NODE_L2_ENGINE_RPC=http://0.0.0.0:8551
+# L1 server provider to which you connect, which can optimize requests. Available options are alchemy, quicknode, parity, nethermind, debug_geth, erigon, basic, and any
+OP_NODE_L1_KIND=alchemy
+OP_NODE_L1_ETH_RPC=
+OP_NODE_L2_ETH_RPC=http://0.0.0.0:8545
+OP_NODE_L2_ROLLUP_RPC=http://0.0.0.0:8547
+
+OP_NODE_PORT=8547
+OP_NODE_SEQUENCER_KEY=
+
+OP_BATCHER_POOL_INTERVAL=1s
+OP_BATCHER_NUM_CONFIRMATIONS=1
+OP_BATCHER_PORT=8548
+OP_BATCHER_KEY=
+
+OP_PROPOSER_PORT=8560
+OP_PROPOSER_POOL_INTERVAL=12s
+OP_PROPOSER_L2OO_ADDR=
+OP_PROPOSER_KEY=
+
+# OP_NODE_L1_TRUST_RPC allows for faster syncing, but should be used *only* if your L1 RPC node
+# is fully trusted. It also allows op-node to work with clients such as Erigon that do not
+# support storage proofs:
+# OP_NODE_L1_TRUST_RPC=true
