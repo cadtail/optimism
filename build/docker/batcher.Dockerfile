@@ -15,7 +15,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists
 
 WORKDIR /app
-COPY --from=op /app/repo/bin/op-batcher ./
+COPY --from=op /app/repo/op-batcher/bin/op-batcher ./
 COPY build/tools/op-batcher-entrypoint op-batcher-entrypoint
 RUN chmod +x op-batcher-entrypoint
 COPY build/goerli ./goerli

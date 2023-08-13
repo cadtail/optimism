@@ -15,7 +15,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists
 
 WORKDIR /app
-COPY --from=op /app/repo/bin/op-node ./
+COPY --from=op /app/repo/op-node/bin/op-node ./
 COPY build/tools/op-node-entrypoint op-node-entrypoint
 RUN chmod +x op-node-entrypoint
 COPY build/goerli ./goerli

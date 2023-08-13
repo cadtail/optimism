@@ -15,7 +15,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists
 
 WORKDIR /app
-COPY --from=op /app/repo/bin/op-proposer ./
+COPY --from=op /app/repo/op-proposer/bin/op-proposer ./
 COPY build/tools/op-proposer-entrypoint op-proposer-entrypoint
 RUN chmod +x op-proposer-entrypoint
 COPY build/goerli ./goerli
